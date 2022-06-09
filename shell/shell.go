@@ -71,6 +71,7 @@ func (c *DockerEventsCmd) exec() error {
 }
 
 func (c *DockerEventsCmd) runEventsFormat() {
+	title := fmt.Sprintf("Docker 服务监控(%s)", config.Cfg.Server.Name)
 	c.Wg.Add(1)
 	go func() {
 		for {
@@ -95,7 +96,6 @@ func (c *DockerEventsCmd) runEventsFormat() {
 						_, okS := c.StatusMap[strings.ToLower(info.Status)]
 
 						if okC && okS {
-							title := "Docker 服务监控"
 							timeEvent := time.Unix(info.Time, 0)
 							txt := fmt.Sprintf("服务：%s\n事件：%s\n时间：%s", info.Name, info.Status, timeEvent.Format("2006-01-02 15-04-05"))
 							notify.SendLarkTextNotify(config.Cfg.Server.LarkNotifyKey, title, txt)

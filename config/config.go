@@ -40,6 +40,7 @@ func AddCfgFileWatcher(configFilePath string) (*fsnotify.Watcher, error) {
 
 type CfgServer struct {
 	Server struct {
+		Name          string   `json:"name" yaml:"name"`
 		LarkNotifyKey string   `json:"lark_notify_key" yaml:"lark_notify_key"`
 		Containers    []string `json:"containers" yaml:"containers"`
 		Status        []string `json:"status" yaml:"status"`

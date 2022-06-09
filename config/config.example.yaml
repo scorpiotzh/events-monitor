@@ -1,4 +1,5 @@
 server:
+  name: "" # 服务名
   lark_notify_key: ""
   containers: # 监听的容器
     - "cross_chain_node-mysql-1"
