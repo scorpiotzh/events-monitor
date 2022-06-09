@@ -1,0 +1,7 @@
+server:
+  lark_notify_key: ""
+  containers: # 监听的容器
+    - "cross_chain_node-mysql-1"
+  status: # 监听的状态
+    - "start"
+    - "stop"
