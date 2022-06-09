@@ -16,3 +16,4 @@
 
 config/config.yaml
 docker-events-monitor
+logs
