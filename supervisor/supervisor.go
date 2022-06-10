@@ -3,7 +3,6 @@ package supervisor
 import (
 	"bufio"
 	"fmt"
-	"github.com/dotbitHQ/docker-events-monitor/config"
 	"github.com/dotbitHQ/docker-events-monitor/notify"
 	"net"
 	"os"
@@ -51,7 +50,7 @@ func (e *EventsListener) parse() error {
 }
 
 func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
-	title := fmt.Sprintf("Supervisor 服务监控(%s)", config.Cfg.Server.Name)
+	title := "Supervisor 服务监控"
 	text := fmt.Sprintf(`程序名称：%s
 事件内容：%s
 程序原状态：%s
