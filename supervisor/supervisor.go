@@ -40,7 +40,7 @@ func (e *EventsListener) Run() {
 					log.Info("run done")
 					return
 				default:
-					if e.closed {
+					if !e.closed {
 						if err := e.parse(); err != nil {
 							log.Error("e.parse() err: ", err.Error())
 							e.parseFail()
