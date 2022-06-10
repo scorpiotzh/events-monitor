@@ -1,6 +1,7 @@
 # docker-events-monitor
 
 ### listen docker events
+
 ```shell
 docker events --filter 'type=container' --format '{"status":"{{.Status}}","name":"{{.Actor.Attributes.name}}","time":{{.Time}}}'
 ```
@@ -17,6 +18,9 @@ server:
   status: # listen status
     - "start"
     - "stop"
+supervisor: # supervisor events listening
+  is_run: false
+  lark_notify_key: ""
 ```
 
 ### build & run
