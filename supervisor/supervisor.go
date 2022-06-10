@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"github.com/dotbitHQ/docker-events-monitor/config"
 	"github.com/dotbitHQ/docker-events-monitor/notify"
-	"github.com/dotbitHQ/docker-events-monitor/tool"
-	"github.com/scorpiotzh/mylog"
 	"net"
 	"os"
 	"strconv"
@@ -14,20 +12,18 @@ import (
 	"time"
 )
 
-var log = tool.GetLog("supervisor", mylog.LevelDebug)
-
 type EventsListener struct {
 	Key    string
 	stdin  *bufio.Reader
 	stdout *bufio.Writer
-	//stderr *bufio.Writer
+	stderr *bufio.Writer
 }
 
 func (e *EventsListener) Run() {
 	e.init()
 	for {
 		if err := e.parse(); err != nil {
-			log.Error("e.parse() err: ", err.Error())
+			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
 		} else {
 			e.parseOk()
@@ -67,14 +63,14 @@ func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
 	case "PROCESS_STATE_STOPPED", "PROCESS_STATE_RUNNING":
 		notify.SendLarkTextNotify(e.Key, title, text)
 	default:
-		log.Warn("sendLarkNotify:", h.EventName)
+		e.logErr(fmt.Errorf("sendLarkNotify: %s", h.EventName))
 	}
 }
 
 func (e *EventsListener) init() {
 	e.stdin = bufio.NewReader(os.Stdin)
 	e.stdout = bufio.NewWriter(os.Stdout)
-	//e.stderr = bufio.NewWriter(os.Stderr)
+	e.stderr = bufio.NewWriter(os.Stderr)
 }
 
 func (e *EventsListener) ready() {
@@ -113,7 +109,7 @@ func (e *EventsListener) parseHeader() (*Header, error) {
 }
 
 func (e *EventsListener) parseFields(data string) (fields map[string]string) {
-	log.Info("parseFields:", data)
+	e.logErr(fmt.Errorf("parseFields: %s", data))
 	fields = make(map[string]string)
 	data = strings.TrimSpace(data)
 	if data == "" {
@@ -191,4 +187,9 @@ func (e *EventsListener) parseOk() {
 func (e *EventsListener) parseFail() {
 	_, _ = e.stdout.WriteString("RESULT 4\nFAIL")
 	_ = e.stdout.Flush()
+}
+
+func (e *EventsListener) logErr(err error) {
+	_, _ = e.stderr.WriteString(err.Error())
+	_ = e.stderr.Flush()
 }
