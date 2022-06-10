@@ -1,5 +1,10 @@
 # docker-events-monitor
 
+### listen docker events
+```shell
+docker events --filter 'type=container' --format '{"status":"{{.Status}}","name":"{{.Actor.Attributes.name}}","time":{{.Time}}}'
+```
+
 ### config/config.yaml
 
 ```yaml
@@ -13,6 +18,8 @@ server:
     - "start"
     - "stop"
 ```
+
+### build & run
 
 ```shell
 git clone https://github.com/scorpiotzh/docker-events-monitor.git
