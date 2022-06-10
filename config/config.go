@@ -45,8 +45,4 @@ type CfgServer struct {
 		Containers    []string `json:"containers" yaml:"containers"`
 		Status        []string `json:"status" yaml:"status"`
 	} `json:"server" yaml:"server"`
-	Supervisor struct {
-		IsRun         bool   `json:"is_run" yaml:"is_run"`
-		LarkNotifyKey string `json:"lark_notify_key" yaml:"lark_notify_key"`
-	} `json:"supervisor" yaml:"supervisor"`
 }

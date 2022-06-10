@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/dotbitHQ/docker-events-monitor/config"
 	"github.com/dotbitHQ/docker-events-monitor/shell"
-	"github.com/dotbitHQ/docker-events-monitor/supervisor"
 	"github.com/dotbitHQ/docker-events-monitor/tool"
 	"github.com/scorpiotzh/mylog"
 	"github.com/scorpiotzh/toolib"
@@ -60,11 +59,6 @@ func runServer(ctx *cli.Context) error {
 	deCmd.InitContainerMap(config.Cfg.Server.Containers, config.Cfg.Server.Status)
 	deCmd.Exec()
 
-	var el supervisor.EventsListener
-	el.Ctx = ctxServer
-	el.Wg = &wgServer
-	el.Run()
-
 	// ============= service end =============
 	toolib.ExitMonitoring(func(sig os.Signal) {
 		log.Warn("ExitMonitoring:", sig.String())
@@ -74,7 +68,6 @@ func runServer(ctx *cli.Context) error {
 		}
 
 		cancel()
-		el.Closed()
 		wgServer.Wait()
 		log.Warn("success exit server. bye bye!")
 		time.Sleep(time.Second)

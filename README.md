@@ -18,9 +18,6 @@ server:
   status: # listen status
     - "start"
     - "stop"
-supervisor: # supervisor events listening
-  is_run: false
-  lark_notify_key: ""
 ```
 
 ### build & run

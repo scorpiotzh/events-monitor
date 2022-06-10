@@ -2,7 +2,6 @@ package supervisor
 
 import (
 	"bufio"
-	"context"
 	"fmt"
 	"github.com/dotbitHQ/docker-events-monitor/config"
 	"github.com/dotbitHQ/docker-events-monitor/notify"
@@ -12,46 +11,28 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"sync"
+	"time"
 )
 
 var log = tool.GetLog("supervisor", mylog.LevelDebug)
 
 type EventsListener struct {
-	Ctx context.Context
-	Wg  *sync.WaitGroup
-
+	Key    string
 	stdin  *bufio.Reader
 	stdout *bufio.Writer
 	//stderr *bufio.Writer
-	closed bool
 }
 
 func (e *EventsListener) Run() {
-	if config.Cfg.Supervisor.IsRun {
-		e.init()
-
-		e.Wg.Add(1)
-		go func() {
-			for {
-				select {
-				case <-e.Ctx.Done():
-					e.Wg.Done()
-					log.Info("run done")
-					return
-				default:
-					if !e.closed {
-						if err := e.parse(); err != nil {
-							log.Error("e.parse() err: ", err.Error())
-							e.parseFail()
-						} else {
-							e.parseOk()
-						}
-					}
-				}
-			}
-		}()
-		log.Info("run ok")
+	e.init()
+	for {
+		if err := e.parse(); err != nil {
+			log.Error("e.parse() err: ", err.Error())
+			e.parseFail()
+		} else {
+			e.parseOk()
+		}
+		time.Sleep(time.Second)
 	}
 }
 
@@ -74,9 +55,7 @@ func (e *EventsListener) parse() error {
 }
 
 func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
-	key := config.Cfg.Supervisor.LarkNotifyKey
 	title := fmt.Sprintf("Supervisor 服务监控(%s)", config.Cfg.Server.Name)
-
 	text := fmt.Sprintf(`程序名称：%s
 事件内容：%s
 程序原状态：%s
@@ -86,7 +65,7 @@ func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
 
 	switch h.EventName {
 	case "PROCESS_STATE_STOPPED", "PROCESS_STATE_RUNNING":
-		notify.SendLarkTextNotify(key, title, text)
+		notify.SendLarkTextNotify(e.Key, title, text)
 	default:
 		log.Warn("sendLarkNotify:", h.EventName)
 	}
@@ -212,11 +191,4 @@ func (e *EventsListener) parseOk() {
 func (e *EventsListener) parseFail() {
 	_, _ = e.stdout.WriteString("RESULT 4\nFAIL")
 	_ = e.stdout.Flush()
-}
-
-func (e *EventsListener) Closed() {
-	e.closed = true
-	if e.stdout != nil {
-		e.parseOk()
-	}
 }
