@@ -15,5 +15,10 @@ server:
 ```
 
 ```shell
+git clone https://github.com/scorpiotzh/docker-events-monitor.git
+cd docker-event-monitor
+make monitor
+cp config/config.example.yaml config/config.yaml 
+vim config/config.yaml 
 ./docker-event-monitor --config=./config/config.yaml
 ``` 
