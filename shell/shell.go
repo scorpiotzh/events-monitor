@@ -78,9 +78,10 @@ func (c *DockerEventsCmd) runEventsFormat() {
 			select {
 			case <-c.Ctx.Done():
 				c.Wg.Done()
-				log.Info("RunEventsFormat done")
+				log.Info("runEventsFormat done")
 				return
 			default:
+				//log.Info("runEventsFormat default start")
 				line, isPrefix, err := c.StdoutReader.ReadLine()
 				if err != nil {
 					if err != io.EOF {
@@ -106,6 +107,7 @@ func (c *DockerEventsCmd) runEventsFormat() {
 				} else {
 					log.Info("runEventsFormat:", string(line), isPrefix)
 				}
+				//log.Info("runEventsFormat default end")
 				time.Sleep(time.Second)
 			}
 		}

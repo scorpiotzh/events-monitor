@@ -6,3 +6,6 @@ server:
   status: # 监听的状态
     - "start"
     - "stop"
+supervisor: # supervisor events listening
+  is_run: false
+  lark_notify_key: ""
