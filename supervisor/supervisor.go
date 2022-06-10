@@ -62,6 +62,7 @@ func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
 	case "PROCESS_STATE_STOPPED", "PROCESS_STATE_RUNNING":
 		notify.SendLarkTextNotify(e.Key, title, text)
 	default:
+		notify.SendLarkTextNotify(e.Key, title, text)
 		e.logErr(fmt.Errorf("sendLarkNotify: %s", h.EventName))
 	}
 }
