@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/dotbitHQ/docker-events-monitor/notify"
+	"github.com/scorpiotzh/toolib"
 	"net"
 	"os"
 	"strconv"
@@ -21,6 +22,7 @@ type EventsListener struct {
 func (e *EventsListener) Run() {
 	e.init()
 	for {
+		e.logErr(fmt.Errorf("e.parse() start"))
 		if err := e.parse(); err != nil {
 			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
@@ -39,10 +41,14 @@ func (e *EventsListener) parse() error {
 		return fmt.Errorf("e.parseHeader err: %s", err.Error())
 	}
 
+	e.logErr(fmt.Errorf("e.parseHeader(): %s", toolib.JsonString(&h)))
+
 	p, err := e.parsePayload(h.Len)
 	if err != nil {
 		return fmt.Errorf("e.parsePayload err: %s", err.Error())
 	}
+
+	e.logErr(fmt.Errorf("e.parsePayload(): %s", toolib.JsonString(&p)))
 
 	e.sendLarkNotify(h, p)
 
@@ -79,13 +85,13 @@ func (e *EventsListener) ready() {
 }
 
 type Header struct {
-	Ver        string
-	Server     string
-	Serial     int
-	Pool       string
-	PoolSerial int
-	EventName  string // 事件名称
-	Len        int    // Payload长度
+	Ver        string `json:"ver"`
+	Server     string `json:"server"`
+	Serial     int    `json:"serial"`
+	Pool       string `json:"pool"`
+	PoolSerial int    `json:"pool_serial"`
+	EventName  string `json:"event_name"` // 事件名称
+	Len        int    `json:"len"`        // Payload长度
 }
 
 func (e *EventsListener) parseHeader() (*Header, error) {
@@ -134,12 +140,12 @@ func (e *EventsListener) parseFields(data string) (fields map[string]string) {
 }
 
 type Payload struct {
-	Ip          string
-	ProcessName string // 进程名称
-	GroupName   string // 进程组名称
-	FromState   string
-	Expected    int
-	Pid         int
+	Ip          string `json:"ip"`
+	ProcessName string `json:"process_name"` // 进程名称
+	GroupName   string `json:"group_name"`   // 进程组名称
+	FromState   string `json:"from_state"`
+	Expected    int    `json:"expected"`
+	Pid         int    `json:"pid"`
 }
 
 func (e *EventsListener) parsePayload(payloadLen int) (*Payload, error) {
