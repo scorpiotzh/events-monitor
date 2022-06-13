@@ -27,6 +27,7 @@ func (e *EventsListener) Run() {
 			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
 		} else {
+			e.logErr(fmt.Errorf("e.parse() ok"))
 			e.parseOk()
 		}
 		time.Sleep(time.Second)
