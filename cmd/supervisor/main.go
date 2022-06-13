@@ -32,6 +32,6 @@ func runServer(ctx *cli.Context) error {
 	}
 	var el supervisor.EventsListener
 	el.Key = key
-	el.Run()
+	el.Run2()
 	return nil
 }
