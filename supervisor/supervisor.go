@@ -3,12 +3,11 @@ package supervisor
 import (
 	"bufio"
 	"fmt"
-	"github.com/dotbitHQ/docker-events-monitor/notify"
-	"github.com/scorpiotzh/toolib"
 	"net"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type EventsListener struct {
@@ -21,63 +20,18 @@ type EventsListener struct {
 func (e *EventsListener) Run() {
 	e.init()
 	for {
-		e.logErr(fmt.Errorf("e.parse() start"))
+		//e.logErr(fmt.Errorf("e.parse() start"))
 		e.ready()
-		e.logErr(fmt.Errorf("e.parse() ready"))
+		//e.logErr(fmt.Errorf("e.parse() ready"))
 		if err := e.parse(); err != nil {
 			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
 		} else {
-			e.logErr(fmt.Errorf("e.parse() ok"))
+			//e.logErr(fmt.Errorf("e.parse() ok"))
 			e.parseOk()
 		}
-		//time.Sleep(time.Second)
+		time.Sleep(time.Second)
 	}
-}
-
-const RESP_OK = "RESULT 2\nOK"
-
-func (e *EventsListener) Run2() {
-	e.init()
-	for {
-		// 发送后等待接收event
-		e.ready()
-		// 接收header
-		h, err := e.parseHeader()
-		if err != nil {
-			e.logErr(fmt.Errorf("e.parseHeader() err: %s", err.Error()))
-		}
-		e.logErr(fmt.Errorf("e.parseHeader():", toolib.JsonString(&h)))
-
-		//line, _, _ := e.stdin.ReadLine()
-		//_, _ = e.stderr.WriteString("read" + string(line))
-		//_ = e.stderr.Flush()
-		//
-		//_, payloadSize := praseHeader(line)
-
-		// 接收payload
-
-		payload := make([]byte, h.Len)
-		_, _ = e.stdin.Read(payload)
-		_, _ = e.stderr.WriteString("read : " + string(payload))
-		_ = e.stderr.Flush()
-
-		e.parseOk()
-	}
-}
-
-func praseHeader(data []byte) (header map[string]string,
-	payloadSize int) {
-	pairs := strings.Split(string(data), " ")
-	header = make(map[string]string, len(pairs))
-
-	for _, pair := range pairs {
-		token := strings.Split(pair, ":")
-		header[token[0]] = token[1]
-	}
-
-	payloadSize, _ = strconv.Atoi(header["len"])
-	return header, payloadSize
 }
 
 func (e *EventsListener) parse() error {
@@ -86,7 +40,7 @@ func (e *EventsListener) parse() error {
 		return fmt.Errorf("e.parseHeader err: %s", err.Error())
 	}
 
-	e.logErr(fmt.Errorf("e.parseHeader(): %s", toolib.JsonString(&h)))
+	//e.logErr(fmt.Errorf("e.parseHeader(): %s", toolib.JsonString(&h)))
 
 	if h.Len == 0 {
 		return nil
@@ -96,9 +50,9 @@ func (e *EventsListener) parse() error {
 		return fmt.Errorf("e.parsePayload err: %s", err.Error())
 	}
 
-	e.logErr(fmt.Errorf("e.parsePayload(): %s", toolib.JsonString(&p)))
+	//e.logErr(fmt.Errorf("e.parsePayload(): %s", toolib.JsonString(&p)))
 
-	//e.sendLarkNotify(h, p)
+	e.sendLarkNotify(h, p)
 
 	return nil
 }
@@ -114,9 +68,8 @@ func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
 
 	switch h.EventName {
 	case "PROCESS_STATE_STOPPED", "PROCESS_STATE_RUNNING":
-		notify.SendLarkTextNotify(e.Key, title, text)
+		e.SendLarkTextNotify(e.Key, title, text)
 	default:
-		notify.SendLarkTextNotify(e.Key, title, text)
 		e.logErr(fmt.Errorf("sendLarkNotify: %s", h.EventName))
 	}
 }
@@ -163,7 +116,7 @@ func (e *EventsListener) parseHeader() (*Header, error) {
 }
 
 func (e *EventsListener) parseFields(data string) (fields map[string]string) {
-	e.logErr(fmt.Errorf("parseFields: %s\n", data))
+	e.logErr(fmt.Errorf("parseFields: %s", data))
 	fields = make(map[string]string)
 	data = strings.TrimSpace(data)
 	if data == "" {
