@@ -56,6 +56,7 @@ func (e *EventsListener) Run2() {
 		//_, payloadSize := praseHeader(line)
 
 		// 接收payload
+
 		payload := make([]byte, h.Len)
 		_, _ = e.stdin.Read(payload)
 		_, _ = e.stderr.WriteString("read : " + string(payload))
@@ -97,7 +98,7 @@ func (e *EventsListener) parse() error {
 
 	e.logErr(fmt.Errorf("e.parsePayload(): %s", toolib.JsonString(&p)))
 
-	e.sendLarkNotify(h, p)
+	//e.sendLarkNotify(h, p)
 
 	return nil
 }
