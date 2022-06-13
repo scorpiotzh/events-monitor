@@ -38,13 +38,10 @@ func (e *EventsListener) Run() {
 const RESP_OK = "RESULT 2\nOK"
 
 func (e *EventsListener) Run2() {
-	e.stdin = bufio.NewReader(os.Stdin)
-	e.stdout = bufio.NewWriter(os.Stdout)
-	e.stderr = bufio.NewWriter(os.Stderr)
+	e.init()
 	for {
 		// 发送后等待接收event
-		_, _ = e.stdout.WriteString("READY\n")
-		_ = e.stdout.Flush()
+		e.ready()
 		// 接收header
 		line, _, _ := e.stdin.ReadLine()
 		_, _ = e.stderr.WriteString("read" + string(line))
@@ -58,8 +55,7 @@ func (e *EventsListener) Run2() {
 		_, _ = e.stderr.WriteString("read : " + string(payload))
 		_ = e.stderr.Flush()
 
-		_, _ = e.stdout.WriteString(RESP_OK)
-		_ = e.stdout.Flush()
+		e.parseOk()
 	}
 }
 
