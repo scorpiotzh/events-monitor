@@ -9,7 +9,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type EventsListener struct {
@@ -23,6 +22,7 @@ func (e *EventsListener) Run() {
 	e.init()
 	for {
 		e.logErr(fmt.Errorf("e.parse() start"))
+		e.ready()
 		if err := e.parse(); err != nil {
 			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
@@ -30,13 +30,11 @@ func (e *EventsListener) Run() {
 			e.logErr(fmt.Errorf("e.parse() ok"))
 			e.parseOk()
 		}
-		time.Sleep(time.Second)
+		//time.Sleep(time.Second)
 	}
 }
 
 func (e *EventsListener) parse() error {
-	e.ready()
-
 	h, err := e.parseHeader()
 	if err != nil {
 		return fmt.Errorf("e.parseHeader err: %s", err.Error())
