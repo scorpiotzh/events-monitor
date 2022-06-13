@@ -109,7 +109,7 @@ func (e *EventsListener) parseHeader() (*Header, error) {
 }
 
 func (e *EventsListener) parseFields(data string) (fields map[string]string) {
-	e.logErr(fmt.Errorf("parseFields: %s", data))
+	e.logErr(fmt.Errorf("parseFields: %s\n", data))
 	fields = make(map[string]string)
 	data = strings.TrimSpace(data)
 	if data == "" {
@@ -190,6 +190,6 @@ func (e *EventsListener) parseFail() {
 }
 
 func (e *EventsListener) logErr(err error) {
-	_, _ = e.stderr.WriteString("\n" + err.Error() + "\n")
+	_, _ = e.stderr.WriteString(err.Error() + "\n")
 	_ = e.stderr.Flush()
 }
