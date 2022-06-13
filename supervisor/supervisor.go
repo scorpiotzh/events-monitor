@@ -43,14 +43,20 @@ func (e *EventsListener) Run2() {
 		// 发送后等待接收event
 		e.ready()
 		// 接收header
-		line, _, _ := e.stdin.ReadLine()
-		_, _ = e.stderr.WriteString("read" + string(line))
-		_ = e.stderr.Flush()
+		h, err := e.parseHeader()
+		if err != nil {
+			e.logErr(fmt.Errorf("e.parseHeader() err: %s", err.Error()))
+		}
+		e.logErr(fmt.Errorf("e.parseHeader():", toolib.JsonString(&h)))
 
-		_, payloadSize := praseHeader(line)
+		//line, _, _ := e.stdin.ReadLine()
+		//_, _ = e.stderr.WriteString("read" + string(line))
+		//_ = e.stderr.Flush()
+		//
+		//_, payloadSize := praseHeader(line)
 
 		// 接收payload
-		payload := make([]byte, payloadSize)
+		payload := make([]byte, h.Len)
 		_, _ = e.stdin.Read(payload)
 		_, _ = e.stderr.WriteString("read : " + string(payload))
 		_ = e.stderr.Flush()
