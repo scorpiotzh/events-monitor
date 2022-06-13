@@ -23,6 +23,7 @@ func (e *EventsListener) Run() {
 	for {
 		e.logErr(fmt.Errorf("e.parse() start"))
 		e.ready()
+		e.logErr(fmt.Errorf("e.parse() ready"))
 		if err := e.parse(); err != nil {
 			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
@@ -42,6 +43,9 @@ func (e *EventsListener) parse() error {
 
 	e.logErr(fmt.Errorf("e.parseHeader(): %s", toolib.JsonString(&h)))
 
+	if h.Len == 0 {
+		return nil
+	}
 	p, err := e.parsePayload(h.Len)
 	if err != nil {
 		return fmt.Errorf("e.parsePayload err: %s", err.Error())
