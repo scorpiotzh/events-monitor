@@ -190,6 +190,6 @@ func (e *EventsListener) parseFail() {
 }
 
 func (e *EventsListener) logErr(err error) {
-	_, _ = e.stderr.WriteString(err.Error())
+	_, _ = e.stderr.WriteString("\n" + err.Error() + "\n")
 	_ = e.stderr.Flush()
 }
