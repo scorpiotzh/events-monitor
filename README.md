@@ -72,7 +72,7 @@ stderr_capture_maxbytes=100MB   ; number of bytes in 'capturemode' (default 0)
 stderr_events_enabled=false   ; emit events on stderr writes (default false)
 # sup
 [eventlistener:sup_listener]
-command=/mnt/server/docker_events/supervisor_server -key f977bc46-5d1d-4d39-a90a-9dc40e205a5d
+command=/mnt/server/docker_events/supervisor_server -key 
 events=PROCESS_STATE,TICK_5
 
 stderr_logfile=/mnt/server/docker_events/logs_sup/err.log        ; stderr log path, NONE for none; default AUTO
