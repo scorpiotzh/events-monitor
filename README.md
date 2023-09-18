@@ -103,6 +103,11 @@ stderr_capture_maxbytes=100MB   ; number of bytes in 'capturemode' (default 0)
 
 ## listen systemd service event
 
+before install, need install libsystemd-dev, here we take ubuntu as an example
+```shell
+apt-get install -y libsystemd-dev
+```
+
 install
 ```shell
 go get github.com/scorpiotzh/docker-events-monitor/cmd/systemd-events-listener
