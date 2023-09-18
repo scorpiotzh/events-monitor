@@ -85,7 +85,7 @@ stderr_capture_maxbytes=100MB   ; number of bytes in 'capturemode' (default 0)
 
 install
 ```shell
-go get github.com/scorpiotzh/docker-events-monitor/cmd/supervisor-events-listener
+go install github.com/scorpiotzh/docker-events-monitor/cmd/supervisor-events-listener@latest
 ```
 
 supervisor config
@@ -110,7 +110,7 @@ apt-get install -y libsystemd-dev
 
 install
 ```shell
-go get github.com/scorpiotzh/docker-events-monitor/cmd/systemd-events-listener
+go install github.com/scorpiotzh/docker-events-monitor/cmd/systemd-events-listener@latest
 ```
 
 start
