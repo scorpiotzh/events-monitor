@@ -2,8 +2,8 @@ package notify
 
 import (
 	"fmt"
-	"github.com/dotbitHQ/docker-events-monitor/tool"
 	"github.com/parnurzeal/gorequest"
+	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"github.com/scorpiotzh/mylog"
 	"time"
 )
@@ -19,6 +19,7 @@ type MsgContent struct {
 	UnEscape bool   `json:"un_escape"`
 	Text     string `json:"text"`
 }
+
 type MsgData struct {
 	Email   string `json:"email"`
 	MsgType string `json:"msg_type"`

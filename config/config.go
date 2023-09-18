@@ -2,8 +2,8 @@ package config
 
 import (
 	"fmt"
-	"github.com/dotbitHQ/docker-events-monitor/tool"
 	"github.com/fsnotify/fsnotify"
+	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"github.com/scorpiotzh/mylog"
 	"github.com/scorpiotzh/toolib"
 )

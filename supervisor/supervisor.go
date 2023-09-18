@@ -3,7 +3,8 @@ package supervisor
 import (
 	"bufio"
 	"fmt"
-	"net"
+	"github.com/scorpiotzh/docker-events-monitor/notify"
+	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"os"
 	"strconv"
 	"strings"
@@ -68,7 +69,7 @@ func (e *EventsListener) sendLarkNotify(h *Header, p *Payload) {
 
 	switch h.EventName {
 	case "PROCESS_STATE_STOPPED", "PROCESS_STATE_RUNNING":
-		e.SendLarkTextNotify(e.Key, title, text)
+		notify.SendLarkTextNotify(e.Key, title, text)
 	default:
 		e.logErr(fmt.Errorf("sendLarkNotify: %s", h.EventName))
 	}
@@ -161,7 +162,7 @@ func (e *EventsListener) parsePayload(payloadLen int) (*Payload, error) {
 	var p Payload
 
 	hostname, _ := os.Hostname()
-	p.Ip = fmt.Sprintf("%s(%s)", getLocalIp(), hostname)
+	p.Ip = fmt.Sprintf("%s(%s)", tool.GetLocalIp(), hostname)
 	p.ProcessName = fields["processname"]
 	p.GroupName = fields["groupname"]
 	p.FromState = fields["from_state"]
@@ -169,21 +170,6 @@ func (e *EventsListener) parsePayload(payloadLen int) (*Payload, error) {
 	p.Pid, _ = strconv.Atoi(fields["pid"])
 
 	return &p, nil
-}
-
-func getLocalIp() string {
-	addrs, err := net.InterfaceAddrs()
-	if err != nil {
-		return ""
-	}
-	for _, addr := range addrs {
-		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-			if ipnet.IP.To4() != nil {
-				return ipnet.IP.String()
-			}
-		}
-	}
-	return ""
 }
 
 func (e *EventsListener) parseOk() {

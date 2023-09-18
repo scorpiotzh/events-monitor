@@ -1,6 +1,6 @@
 # docker-events-monitor
 
-### listen docker events
+## listen docker events
 
 ```shell
 docker events --filter 'type=container' --format '{"status":"{{.Status}}","name":"{{.Actor.Attributes.name}}","time":{{.Time}}}'
@@ -79,4 +79,36 @@ stderr_logfile=/mnt/server/docker_events/logs_sup/err.log        ; stderr log pa
 stderr_logfile_maxbytes=100MB   ; max # logfile bytes b4 rotation (default 50MB)
 stderr_logfile_backups=20     ; # of stderr logfile backups (default 10)
 stderr_capture_maxbytes=100MB   ; number of bytes in 'capturemode' (default 0)
+```
+
+## listen supervisor events
+
+install
+```shell
+go get github.com/scorpiotzh/docker-events-monitor/cmd/supervisor-events-listener
+```
+
+supervisor config
+
+```shell
+[eventlistener:listener_sup]
+command=/mnt/server/docker-events-monitor/supervisor-events-listener -key dasdaf1afda-32sdaf1hogd3-jkliqvjjj; the key replace your own lark notify key
+events=PROCESS_STATE,TICK_5
+
+stderr_logfile=/mnt/server/docker-events-monitor/logs_sup/err.log        ; stderr log path, NONE for none; default AUTO
+stderr_logfile_maxbytes=100MB   ; max # logfile bytes b4 rotation (default 50MB)
+stderr_logfile_backups=20     ; # of stderr logfile backups (default 10)
+stderr_capture_maxbytes=100MB   ; number of bytes in 'capturemode' (default 0)
+```
+
+## listen systemd service event
+
+install
+```shell
+go get github.com/scorpiotzh/docker-events-monitor/cmd/systemd-events-listener
+```
+
+start
+```shell
+systemd-events-listener -key dasdaf1afda-32sdaf1hogd3-jkliqvjjj -services nginx,supervisor
 ```

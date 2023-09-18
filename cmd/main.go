@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/dotbitHQ/docker-events-monitor/config"
-	"github.com/dotbitHQ/docker-events-monitor/shell"
-	"github.com/dotbitHQ/docker-events-monitor/tool"
+	"github.com/scorpiotzh/docker-events-monitor/config"
+	"github.com/scorpiotzh/docker-events-monitor/shell"
+	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"github.com/scorpiotzh/mylog"
 	"github.com/scorpiotzh/toolib"
 	"github.com/urfave/cli/v2"
