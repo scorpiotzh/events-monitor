@@ -197,7 +197,7 @@ func (e *EventListener) sendNotify(p *Payload) {
 	text := fmt.Sprintf("程序名称：%s\n事件内容：%s\n程序原状态：%s\n服务器IP：%s\n进程号：%d",
 		p.ProcessName, p.EventName, p.FromState, p.Ip, p.Pid)
 	if p.Message != "" {
-		text += fmt.Sprintf("报错内容：%s", p.Message)
+		text += fmt.Sprintf("\n报错内容：%s", p.Message)
 	}
 	notify.SendLarkTextNotify(e.LarkKey, title, text)
 }
