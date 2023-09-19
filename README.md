@@ -1,4 +1,4 @@
-# docker-events-monitor
+# events-monitor
 
 ## listen docker events
 
