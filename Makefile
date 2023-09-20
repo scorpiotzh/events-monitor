@@ -10,7 +10,7 @@ sup:
 	go build -o $(BIN_SUPERVISOR) cmd/supervisor-events-listener/main.go
 	@echo "Build $(BIN_SUPERVISOR) successfully. You can run ./$(BIN_SUPERVISOR) now.If you can't see it soon,wait some seconds"
 
-systemd:
+sd:
 	go build -o $(BIN_SYSTEMD) cmd/systemd-events-listener/main.go
 	@echo "Build $(BIN_SYSTEMD) successfully. You can run ./$(BIN_SYSTEMD) now.If you can't see it soon,wait some seconds"
 
