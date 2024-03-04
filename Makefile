@@ -16,3 +16,4 @@ sd:
 
 update:
 	go mod tidy
+	go mod vendor

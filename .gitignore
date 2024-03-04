@@ -16,6 +16,6 @@
 
 config/config.yaml
 docker-events-monitor
-supervisor-events-listening
+supervisor-events-listener
 logs
 .idea
