@@ -30,6 +30,7 @@ func runServer(ctx *cli.Context) error {
 	if key == "" {
 		return fmt.Errorf("key is nil")
 	}
+	//fmt.Println(key)
 	var el supervisor.EventsListener
 	el.Key = key
 	el.Run()
