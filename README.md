@@ -23,7 +23,7 @@ server:
 ### build & run
 
 ```shell
-git clone https://github.com/scorpiotzh/docker-events-monitor.git
+git clone https://events-monitor.git
 cd docker-event-monitor
 make monitor
 cp config/config.example.yaml config/config.yaml 
@@ -85,7 +85,7 @@ stderr_capture_maxbytes=100MB   ; number of bytes in 'capturemode' (default 0)
 
 install
 ```shell
-go install github.com/scorpiotzh/docker-events-monitor/cmd/supervisor-events-listener@latest
+go install events-monitor/cmd/supervisor-events-listener@latest
 ```
 
 supervisor config
@@ -110,7 +110,7 @@ apt-get install -y libsystemd-dev
 
 install
 ```shell
-go install github.com/scorpiotzh/docker-events-monitor/cmd/systemd-events-listener@latest
+go install events-monitor/cmd/systemd-events-listener@latest
 ```
 
 start

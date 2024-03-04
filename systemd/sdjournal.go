@@ -1,10 +1,10 @@
 package systemd
 
 import (
+	"events-monitor/notify"
+	"events-monitor/tool"
 	"fmt"
 	"github.com/coreos/go-systemd/v22/sdjournal"
-	"github.com/scorpiotzh/docker-events-monitor/notify"
-	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"github.com/scorpiotzh/mylog"
 	"os/exec"
 	"strconv"

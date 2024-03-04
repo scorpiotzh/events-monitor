@@ -2,9 +2,9 @@ package supervisor
 
 import (
 	"bufio"
+	"events-monitor/notify"
+	"events-monitor/tool"
 	"fmt"
-	"github.com/scorpiotzh/docker-events-monitor/notify"
-	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"github.com/scorpiotzh/toolib"
 	"os"
 	"strconv"

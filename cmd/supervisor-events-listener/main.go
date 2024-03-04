@@ -1,8 +1,8 @@
 package main
 
 import (
+	"events-monitor/supervisor"
 	"fmt"
-	"github.com/scorpiotzh/docker-events-monitor/supervisor"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"

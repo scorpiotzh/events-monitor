@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
+	"events-monitor/config"
+	"events-monitor/shell"
+	"events-monitor/tool"
 	"fmt"
-	"github.com/scorpiotzh/docker-events-monitor/config"
-	"github.com/scorpiotzh/docker-events-monitor/shell"
-	"github.com/scorpiotzh/docker-events-monitor/tool"
 	"github.com/scorpiotzh/mylog"
 	"github.com/scorpiotzh/toolib"
 	"github.com/urfave/cli/v2"

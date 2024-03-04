@@ -1,8 +1,8 @@
 package main
 
 import (
+	"events-monitor/systemd"
 	"fmt"
-	"github.com/scorpiotzh/docker-events-monitor/systemd"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
