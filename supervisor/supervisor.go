@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/scorpiotzh/docker-events-monitor/notify"
 	"github.com/scorpiotzh/docker-events-monitor/tool"
+	"github.com/scorpiotzh/toolib"
 	"os"
 	"strconv"
 	"strings"
@@ -21,14 +22,14 @@ type EventsListener struct {
 func (e *EventsListener) Run() {
 	e.init()
 	for {
-		//e.logErr(fmt.Errorf("e.parse() start"))
+		e.logErr(fmt.Errorf("e.parse() start"))
 		e.ready()
-		//e.logErr(fmt.Errorf("e.parse() ready"))
+		e.logErr(fmt.Errorf("e.parse() ready"))
 		if err := e.parse(); err != nil {
 			e.logErr(fmt.Errorf("e.parse() err: %s", err.Error()))
 			e.parseFail()
 		} else {
-			//e.logErr(fmt.Errorf("e.parse() ok"))
+			e.logErr(fmt.Errorf("e.parse() ok"))
 			e.parseOk()
 		}
 		time.Sleep(time.Second)
@@ -41,7 +42,7 @@ func (e *EventsListener) parse() error {
 		return fmt.Errorf("e.parseHeader err: %s", err.Error())
 	}
 
-	//e.logErr(fmt.Errorf("e.parseHeader(): %s", toolib.JsonString(&h)))
+	e.logErr(fmt.Errorf("e.parseHeader(): %s", toolib.JsonString(&h)))
 
 	if h.Len == 0 {
 		return nil
@@ -51,7 +52,7 @@ func (e *EventsListener) parse() error {
 		return fmt.Errorf("e.parsePayload err: %s", err.Error())
 	}
 
-	//e.logErr(fmt.Errorf("e.parsePayload(): %s", toolib.JsonString(&p)))
+	e.logErr(fmt.Errorf("e.parsePayload(): %s", toolib.JsonString(&p)))
 
 	e.sendLarkNotify(h, p)
 
